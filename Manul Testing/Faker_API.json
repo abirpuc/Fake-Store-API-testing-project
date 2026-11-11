@@ -1,0 +1,3033 @@
+{
+  "info": {
+    "_postman_id": "d6e6171d-4115-48a9-8af3-f21ac0fc252e",
+    "name": "Fake Store API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31293931",
+    "_collection_link": "https://go.postman.co/collection/31293931-d6e6171d-4115-48a9-8af3-f21ac0fc252e?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Raw API",
+      "item": [
+        {
+          "name": "User",
+          "item": [
+            {
+              "name": "TS_001 | Get all users",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/users",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_002 | Get a single user",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getRandomeUser(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getUser =  getRandomeUser(1,10)\r\npm.environment.set(\"valid_user_ID\", getUser);"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});\r\n"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_003 | Get a single user invalid ID",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{invalid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_004 | Get a single user with invalid API",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/usersss/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "usersss",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_005 |  Create a user",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"email\": \"abir@gmail.com\",\r\n    \"password\":\"admin@12345\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_006 |  Create a user without email",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"password\":\"admin@12345\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_007 |  Create a user without password",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"email\": \"abir@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_008 |  Create a user invalid email",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"email\": \"abir@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_009 |  Create a user with empty field",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_010 |  Update user",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_011 |  Update user  without name",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_012 |  Update user  without email",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_013 |  Update user  invalid ID",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{invalid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_014 |  Update user  with wrong API",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/usersss/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "usersss",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_015 |  Partial update user",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\":\"abir@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_016 |  Partial update user with invalid ID",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\":\"abir@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{invalid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_017 |  Partial update user wrong API",
+              "request": {
+                "method": "PATCH",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"email\":\"abir@gmail.com\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/usessrs/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "usessrs",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_018 |  Delete a User",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "function getrandomeUser(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1)) + min;\r\n}\r\n\r\nlet getUser = getrandomeUser(1, 10)\r\n\r\npm.environment.set(\"valid_user_ID\", getUser);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{valid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TS_019 |  Delete a User with invalid ID",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "users",
+                    "{{invalid_user_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Auth/Login",
+          "item": [
+            {
+              "name": "TC_001 | Login with valid user",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"johnd\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/auth/login",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_005 | Login with invalid user",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"joh\",\r\n    \"password\":\"m38rmF$2\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/auth/login",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_003 | Login with valid user",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"johnd\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/auth/login",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_004 | Login with invalid password",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"johnd\",\r\n    \"password\":\"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/auth/login",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_005 | Login with empty password",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"joh\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/auth/login",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_005 | Login with empty username",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/auth/login",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_007 | Login with both empty field",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"username\":\"joh\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/auth/login",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Products",
+          "item": [
+            {
+              "name": "TC_001 | get all products",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_002 | get all products invalid endpoints",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/productssss",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "productssss"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_003 | get single product",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/products/0",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "0"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_004 | get single product invalid ID",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "{{invalid_Product_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_005 | get single product id 0",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "{{invalid_Product_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_006 | get single product alphabetical id",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/products/addc",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "addc"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_007 | get single product negative id",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/products/-1",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "-1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_008 | create a product",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops\",\r\n    \"price\": 109.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_009 | create a product missing title",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"price\": 109.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_010 | create a product missing price",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops\",\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_011 | create a product negative price",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops\",\r\n    \"price\": -109.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_012 | create a product invalid data types",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": \"1\",\r\n    \"title\": Fjallraven_Foldsack_No_1_Backpack,_Fits_15_Laptops,\r\n    \"price\": \"109.95\",\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_013 | update a product",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "function getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No.\",\r\n    \"price\": 1099.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest.\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products/{{product_id}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "{{product_id}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_014 | update a product with invalid ID",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No.\",\r\n    \"price\": 1099.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest.\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "{{invalid_Product_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_015 | Delete a product",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getProductID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProduct = getProductID(1, 20)\r\npm.environment.set(\"product_id\", getProduct)"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/products/{{product_id}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "{{product_id}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_016 | Delete a product",
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "products",
+                    "{{invalid_Product_ID}}"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Carts",
+          "item": [
+            {
+              "name": "TC_001 | get all carts",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/carts",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "carts"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_002 | get all carts with invalid endpoint",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/cartsss",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "cartsss"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_003 | get single cart",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\n\r\nfunction getCartID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getCart = getCartID(1,6)\r\n\r\npm.environment.set(\"cart_id\",getCart)"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/carts/{{cart_id}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "carts",
+                    "{{cart_id}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_004 | get single cart with invalid id",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/cart/94238",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "cart",
+                    "94238"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_005 | get cart with ID 0",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/cart/0",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "cart",
+                    "0"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_006 | create a cart",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/carts",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "carts"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_006 | create a cart with invalid endpoint",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/cartssssss",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "cartssssss"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_007 | Update a single cart",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\n\r\nfunction getCartID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getCart = getCartID(1,6)\r\n\r\npm.environment.set(\"cart_id\",getCart)"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 2,\r\n    \"userId\": 1,\r\n    \"date\": \"2020-01-02T00:00:00.000Z\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 10\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/carts/{{cart_id}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "carts",
+                    "{{cart_id}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_008 | Update a single cart with invalid ID",
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": 2,\r\n    \"userId\": 1,\r\n    \"date\": \"2020-01-02T00:00:00.000Z\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 10\r\n        }\r\n    ]\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_URL}}/carts/2938c493",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "carts",
+                    "2938c493"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_009 | Delete a cart",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\n\r\nfunction getCartID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getCart = getCartID(1, 7);\r\n\r\npm.environment.set(\"cart_id\", getCart);"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/carts/{{cart_id}}",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "carts",
+                    "{{cart_id}}"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC_010 | Delete cart invalid id",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "\r\nfunction getCartInvalidID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1)) + min;\r\n}\r\n\r\nlet getCartID = getCartInvalidID(10, 100)\r\npm.environment.set(\"invalid_Cart_id\", getCartID);"
+                    ]
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});"
+                    ]
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_URL}}/carts/1c",
+                  "host": [
+                    "{{base_URL}}"
+                  ],
+                  "path": [
+                    "carts",
+                    "1c"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Test API",
+      "item": [
+        {
+          "name": "User",
+          "item": [
+            {
+              "name": "GET",
+              "item": [
+                {
+                  "name": "Positive",
+                  "item": [
+                    {
+                      "name": "TS_001 | Get all users",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});\r\n\r\npm.test(\"Products response is an array\", function () {\r\n  pm.expect(pm.response.json()).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"Response body is valid JSON when non-empty\", function () {\r\n  if (pm.response.text().length) pm.expect(() => pm.response.json()).not.to.throw();\r\n});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/users",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "users"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TS_002 | Get a single user",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "\r\nfunction getRandomeUser(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getUser =  getRandomeUser(1,10)\r\npm.environment.set(\"valid_user_ID\", getUser);"
+                            ]
+                          }
+                        },
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});\r\n"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "users",
+                            "{{valid_user_ID}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Negative",
+                  "item": [
+                    {
+                      "name": "TS_003 | Get a single user invalid ID",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "users",
+                            "{{invalid_user_ID}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TS_004 | Get a single user with invalid API",
+                      "event": [
+                        {
+                          "listen": "test",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "pm.test(\"Status code is 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});\r\n\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/usersss/{{valid_user_ID}}",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "usersss",
+                            "{{valid_user_ID}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "POST",
+              "item": [
+                {
+                  "name": "TS_005 |  Create a user",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 201\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\npm.test(\"Response time is less than 400ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(400);\r\n});"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"email\": \"abir@gmail.com\",\r\n    \"password\":\"admin@12345\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_006 |  Create a user without email",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"password\":\"admin@12345\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_007 |  Create a user without password",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 400\", function () {\r\n    pm.response.to.have.status(400);\r\n});"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"email\": \"abir@gmail.com\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_008 |  Create a user invalid email",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 12,\r\n    \"username\": \"Abir\",\r\n    \"email\": \"abir@gmail.com\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_009 |  Create a user with empty field",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "PUT",
+              "item": [
+                {
+                  "name": "TS_011 |  Update user  without name",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 1,\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{valid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_012 |  Update user  without email",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{valid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_013 |  Update user  invalid ID",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{invalid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_014 |  Update user  with wrong API",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/usersss/{{valid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "usersss",
+                        "{{valid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_010 |  Update user",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 1,\r\n    \"username\":\"Abir\",\r\n    \"email\":\"abir@gmail.com\",\r\n    \"password\":\"abir!1234234\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{valid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "PATCH",
+              "item": [
+                {
+                  "name": "TS_015 |  Partial update user",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"email\":\"abir@gmail.com\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{valid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_016 |  Partial update user with invalid ID",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"email\":\"abir@gmail.com\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{invalid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_017 |  Partial update user wrong API",
+                  "request": {
+                    "method": "PATCH",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"email\":\"abir@gmail.com\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/usessrs/{{valid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "usessrs",
+                        "{{valid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "DELETE",
+              "item": [
+                {
+                  "name": "TS_018 |  Delete a User",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "function getrandomeUser(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1)) + min;\r\n}\r\n\r\nlet getUser = getrandomeUser(1, 10)\r\n\r\npm.environment.set(\"valid_user_ID\", getUser);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{valid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{valid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TS_019 |  Delete a User with invalid ID",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/users/{{invalid_user_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "users",
+                        "{{invalid_user_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Auth/Login",
+          "item": [
+            {
+              "name": "Positive",
+              "item": [
+                {
+                  "name": "TC_001 | Login with valid user",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\":\"johnd\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/auth/login",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "Negative",
+              "item": [
+                {
+                  "name": "TC_005 | Login with invalid user",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\":\"joh\",\r\n    \"password\":\"m38rmF$2\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/auth/login",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_003 | Login with valid user",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\":\"johnd\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/auth/login",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_004 | Login with invalid password",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\":\"johnd\",\r\n    \"password\":\"\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/auth/login",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_005 | Login with empty password",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\":\"joh\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/auth/login",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_005 | Login with empty username",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\":\"\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/auth/login",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_007 | Login with both empty field",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"username\":\"joh\",\r\n    \"password\":\"m38rmF$\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/auth/login",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Products",
+          "item": [
+            {
+              "name": "GET",
+              "item": [
+                {
+                  "name": "Positive",
+                  "item": [
+                    {
+                      "name": "TC_001 | get all products",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{base_URL}}/products",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_003 | get single product",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/products/0",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products",
+                            "0"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Negative",
+                  "item": [
+                    {
+                      "name": "TC_002 | get all products invalid endpoints",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/productssss",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "productssss"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_004 | get single product invalid ID",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products",
+                            "{{invalid_Product_ID}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_005 | get single product id 0",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products",
+                            "{{invalid_Product_ID}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_006 | get single product alphabetical id",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/products/addc",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products",
+                            "addc"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_007 | get single product negative id",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "\r\nfunction getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/products/-1",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products",
+                            "-1"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "Post",
+              "item": [
+                {
+                  "name": "Positive",
+                  "item": [
+                    {
+                      "name": "TC_008 | create a product",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops\",\r\n    \"price\": 109.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{base_URL}}/products",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Negative",
+                  "item": [
+                    {
+                      "name": "TC_009 | create a product missing title",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"id\": 1,\r\n    \"price\": 109.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{base_URL}}/products",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_010 | create a product missing price",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops\",\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{base_URL}}/products",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_011 | create a product negative price",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops\",\r\n    \"price\": -109.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{base_URL}}/products",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_012 | create a product invalid data types",
+                      "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\r\n    \"id\": \"1\",\r\n    \"title\": Fjallraven_Foldsack_No_1_Backpack,_Fits_15_Laptops,\r\n    \"price\": \"109.95\",\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                          "options": {
+                            "raw": {
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{base_URL}}/products",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "products"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "PUT",
+              "item": [
+                {
+                  "name": "TC_013 | update a product",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "function getProduct(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProductId = getProduct(1, 20); // Assuming there are only 2 products for simplicity\r\n\r\npm.environment.set(\"product_id\", getProductId);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No.\",\r\n    \"price\": 1099.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest.\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/products/{{product_id}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "products",
+                        "{{product_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_014 | update a product with invalid ID",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 1,\r\n    \"title\": \"Fjallraven - Foldsack No.\",\r\n    \"price\": 1099.95,\r\n    \"description\": \"Your perfect pack for everyday use and walks in the forest.\",\r\n    \"category\": \"men's clothing\",\r\n    \"image\": \"https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_t.png\"\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "products",
+                        "{{invalid_Product_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "DELETE",
+              "item": [
+                {
+                  "name": "TC_015 | Delete a product",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "\r\nfunction getProductID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getProduct = getProductID(1, 20)\r\npm.environment.set(\"product_id\", getProduct)"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/products/{{product_id}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "products",
+                        "{{product_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_016 | Delete a product",
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/products/{{invalid_Product_ID}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "products",
+                        "{{invalid_Product_ID}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Carts",
+          "item": [
+            {
+              "name": "GET",
+              "item": [
+                {
+                  "name": "Positive",
+                  "item": [
+                    {
+                      "name": "TC_001 | get all carts",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/carts",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "carts"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_003 | get single cart",
+                      "event": [
+                        {
+                          "listen": "prerequest",
+                          "script": {
+                            "type": "text/javascript",
+                            "exec": [
+                              "\r\n\r\nfunction getCartID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getCart = getCartID(1,6)\r\n\r\npm.environment.set(\"cart_id\",getCart)"
+                            ]
+                          }
+                        }
+                      ],
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/carts/{{cart_id}}",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "carts",
+                            "{{cart_id}}"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                },
+                {
+                  "name": "Negative",
+                  "item": [
+                    {
+                      "name": "TC_002 | get all carts with invalid endpoint",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/cartsss",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "cartsss"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_004 | get single cart with invalid id",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/cart/94238",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "cart",
+                            "94238"
+                          ]
+                        }
+                      },
+                      "response": []
+                    },
+                    {
+                      "name": "TC_005 | get cart with ID 0",
+                      "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{base_URL}}/cart/0",
+                          "host": [
+                            "{{base_URL}}"
+                          ],
+                          "path": [
+                            "cart",
+                            "0"
+                          ]
+                        }
+                      },
+                      "response": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "POST",
+              "item": [
+                {
+                  "name": "TC_006 | create a cart",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/carts",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "carts"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_006 | create a cart with invalid endpoint",
+                  "request": {
+                    "method": "POST",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/cartssssss",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "cartssssss"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "PUT",
+              "item": [
+                {
+                  "name": "TC_007 | Update a single cart",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "\r\n\r\nfunction getCartID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getCart = getCartID(1,6)\r\n\r\npm.environment.set(\"cart_id\",getCart)"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 2,\r\n    \"userId\": 1,\r\n    \"date\": \"2020-01-02T00:00:00.000Z\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 10\r\n        }\r\n    ]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/carts/{{cart_id}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "carts",
+                        "{{cart_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_008 | Update a single cart with invalid ID",
+                  "request": {
+                    "method": "PUT",
+                    "header": [],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\r\n    \"id\": 2,\r\n    \"userId\": 1,\r\n    \"date\": \"2020-01-02T00:00:00.000Z\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": 2,\r\n            \"quantity\": 10\r\n        }\r\n    ]\r\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_URL}}/carts/2938c493",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "carts",
+                        "2938c493"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            },
+            {
+              "name": "DELETE",
+              "item": [
+                {
+                  "name": "TC_010 | Delete cart invalid id",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "\r\nfunction getCartInvalidID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1)) + min;\r\n}\r\n\r\nlet getCartID = getCartInvalidID(10, 100)\r\npm.environment.set(\"invalid_Cart_id\", getCartID);"
+                        ]
+                      }
+                    },
+                    {
+                      "listen": "test",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "pm.test(\"Status code is 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/carts/1c",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "carts",
+                        "1c"
+                      ]
+                    }
+                  },
+                  "response": []
+                },
+                {
+                  "name": "TC_009 | Delete a cart",
+                  "event": [
+                    {
+                      "listen": "prerequest",
+                      "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                          "\r\n\r\nfunction getCartID(min, max){\r\n    return Math.floor(Math.random() * (max - min + 1) + min);\r\n}\r\n\r\nlet getCart = getCartID(1, 7);\r\n\r\npm.environment.set(\"cart_id\", getCart);"
+                        ]
+                      }
+                    }
+                  ],
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_URL}}/carts/{{cart_id}}",
+                      "host": [
+                        "{{base_URL}}"
+                      ],
+                      "path": [
+                        "carts",
+                        "{{cart_id}}"
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
